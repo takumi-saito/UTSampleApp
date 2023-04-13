@@ -1,0 +1,46 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./gradlew
+
+    - name: Build and run tests
+      run: ./gradlew build test
+
+    - name: Generate coverage report
+      run: ./gradlew jacocoTestReport
+
+    - name: Check coverage
+      run: |
+        min_coverage=80
+        actual_coverage=$(grep -oP '(?<=total=")[0-9]*\.[0-9]*(?=%")' app/build/reports/jacoco/jacocoTestReport/html/index.xml)
+        is_less=$(echo "$actual_coverage < $min_coverage" | bc)
+        if [ $is_less -eq 1 ]; then
+          echo "error: coverage ($actual_coverage%) is below the minimum required ($min_coverage%)"
+          exit 1
+        else
+          echo "success: coverage ($actual_coverage%) is above the minimum required ($min_coverage%)"
+        fi
+
