@@ -57,6 +57,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         min-coverage-overall: 40
         min-coverage-changed-files: 60
-#    - name: Debug
-#      if: ${{ always() }}
-#      uses: mxschmitt/action-tmate@v3
+    - name: Debug
+      if: ${{ always() }}
+      uses: mxschmitt/action-tmate@v3
