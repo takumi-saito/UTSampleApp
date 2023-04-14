@@ -5,4 +5,7 @@ interface ItemRepository {
     fun addAllItems(items: List<String>): List<String>
     fun removeItem(item: String): List<String>
     fun findItem(item: String): String?
+    fun takeItems(take: Int): List<String>
+    fun firstItem(): String?
+    fun lastItem(): String?
 }
