@@ -49,3 +49,6 @@ jobs:
         fi
 
         echo "end"
+    - name: Debug
+      if: ${{ always() }}
+      uses: mxschmitt/action-tmate@v3
