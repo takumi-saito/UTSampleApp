@@ -32,40 +32,12 @@ jobs:
     - name: Generate coverage report
       run: ./gradlew jacocoTestReport
 
-#     - name: Check coverage
-#       run: |
-#         echo "start"
-#         min_coverage=80
-#         echo "min_coverage:$min_coverage"
-#         actual_coverage=$(grep -oP '(?<=total=")[0-9]*\.[0-9]*(?=%")' app/build/reports/jacocoTestReport/html/index.html)
-#         echo "actual_coverage:$actual_coverage"
-#         is_less=$(echo "$actual_coverage < $min_coverage" | bc)
-#         echo "is_less:$is_less"
-#         if [ $is_less -eq 1 ]; then
-#           echo "error: coverage ($actual_coverage%) is below the minimum required ($min_coverage%)"
-#           exit 1
-#         else
-#           echo "success: coverage ($actual_coverage%) is above the minimum required ($min_coverage%)"
-#         fi
-
-#         echo "end"
     - name: Add coverage to PR
       id: jacoco
-      uses: takumi-saito/jacoco-report@v1.4
+      uses: takumi-saito/jacoco-report@v1.5
       with:
         paths: ${{ github.workspace }}/app/build/reports/jacocoTestReport/jacocoTestReport.xml
         token: ${{ secrets.GITHUB_TOKEN }}
         min-coverage-overall: 40
         min-coverage-changed-files: 60
         debug-mode: true
-#    - name: Add coverage to PR
-#      id: jacoco
-#      uses: madrapps/jacoco-report@v1.3
-#      with:
-#        paths: ${{ github.workspace }}/app/build/reports/jacocoTestReport/jacocoTestReport.xml
-#        token: ${{ secrets.GITHUB_TOKEN }}
-#        min-coverage-overall: 40
-#        min-coverage-changed-files: 60
-#    - name: Debug
-#      if: ${{ always() }}
-#      uses: mxschmitt/action-tmate@v3
