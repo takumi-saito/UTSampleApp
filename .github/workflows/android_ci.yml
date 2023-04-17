@@ -51,7 +51,7 @@ jobs:
 #         echo "end"
     - name: Add coverage to PR
       id: jacoco
-      uses: takumi-saito/jacoco-report@v1.3
+      uses: takumi-saito/jacoco-report@v1.4
       with:
         paths: ${{ github.workspace }}/app/build/reports/jacocoTestReport/jacocoTestReport.xml
         token: ${{ secrets.GITHUB_TOKEN }}
