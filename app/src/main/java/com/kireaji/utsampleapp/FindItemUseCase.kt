@@ -5,8 +5,8 @@ class FindItemUseCase(private val itemRepository: ItemRepository) {
         return itemRepository.findItem(item)
     }
 
-    fun takeItems(): List<String> {
-        return itemRepository.takeItems(3)
+    fun takeItems(take: Int): List<String> {
+        return itemRepository.takeItems(take)
     }
 
     fun firstItem(): String? {
