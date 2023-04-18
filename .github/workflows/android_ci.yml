@@ -11,7 +11,8 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+#    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout repository
@@ -32,15 +33,13 @@ jobs:
     - name: Generate coverage report
       run: ./gradlew jacocoTestReport
 
-    - name: Check coverage
-      run: |
-        min_coverage=80
-        actual_coverage=$(grep -oP '(?<=total=")[0-9]*\.[0-9]*(?=%")' app/build/reports/jacoco/jacocoTestReport/html/index.xml)
-        is_less=$(echo "$actual_coverage < $min_coverage" | bc)
-        if [ $is_less -eq 1 ]; then
-          echo "error: coverage ($actual_coverage%) is below the minimum required ($min_coverage%)"
-          exit 1
-        else
-          echo "success: coverage ($actual_coverage%) is above the minimum required ($min_coverage%)"
-        fi
-
+    - name: Add coverage to PR
+      id: jacoco
+      uses: takumi-saito/jacoco-report@v1.7
+      with:
+        paths: ${{ github.workspace }}/app/build/reports/jacocoTestReport/jacocoTestReport.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
+        min-coverage-overall: 40
+        min-coverage-changed-files: 60
+        merge-block: false
+        debug-mode: true

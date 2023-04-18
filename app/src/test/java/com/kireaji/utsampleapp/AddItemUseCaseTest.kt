@@ -45,7 +45,7 @@ class AddItemUseCaseTest {
         `when`(itemRepository.findItem(item)).thenReturn(item)
 
         val findItemUseCase = FindItemUseCase(itemRepository)
-        val result = findItemUseCase.execute(item)
+        val result = findItemUseCase.findItem(item)
 
         assertEquals(item, result)
     }
@@ -57,7 +57,7 @@ class AddItemUseCaseTest {
         `when`(itemRepository.findItem(item)).thenReturn(null)
 
         val findItemUseCase = FindItemUseCase(itemRepository)
-        val result = findItemUseCase.execute(item)
+        val result = findItemUseCase.findItem(item)
 
         assertNull(result)
     }
