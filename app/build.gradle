@@ -60,8 +60,12 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
         csv.enabled false
     }
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
-    def debugTree = fileTree(dir: "$buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def excludes = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(
+            dir: "$buildDir/tmp/kotlin-classes/debug",
+            include: '**/*UseCase.*',
+            excludes: excludes
+    )
     def mainSrc = "$project.projectDir/src/main/java"
 
     sourceDirectories.from = files([mainSrc])
